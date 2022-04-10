@@ -1,0 +1,278 @@
+---
+title: "運算思維final project用"
+author: "Tina Yeh"
+date: "12/03/2020"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r library}
+library(dplyr)
+library(tidyverse)
+library(rvest)
+library(rio)
+```
+
+## check Python can run
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(python.reticulate=FALSE)
+```
+
+```{python}
+a=1
+b=2
+print(a,b)
+```
+
+```{r route}
+setwd("D:/")
+setwd("D:/user/Documents/課/運算思維")
+```
+
+```{r read xlsx}
+double <- import("條件一覽(整理).xlsx", which=1)
+minor <- import("條件一覽(整理).xlsx", which=2)
+transfer <- import("條件一覽(整理).xlsx", which=3)
+```
+
+```{r read course}
+course_108_2 <-list()
+for(i in 1:7){
+  course_108_2[[i]] <- import("109學年上學期課程.xlsx", which = i)
+}
+course_108_2 <- rbind(course_108_2[[1]],course_108_2[[2]],course_108_2[[3]],course_108_2[[4]],course_108_2[[5]],course_108_2[[6]],course_108_2[[7]])
+
+
+course_109_1 <-list()
+for(i in 1:7){
+  course_109_1[[i]] <- import("108學年下學期課程.xlsx", which = i)
+}
+course_109_1 <- rbind(course_109_1[[1]],course_109_1[[2]],course_109_1[[3]],course_109_1[[4]],course_109_1[[5]],course_109_1[[6]],course_109_1[[7]])
+```
+
+```{r 類別}
+# 招收：　年級限制：　成績要求：　繳交資料：　先修課程：　測驗：　申請時間：　聯絡電話：　
+# 招收與否　申請條件：　成績要求：　繳交資料：　先修課程：　錄取名額：　測驗：　申請時間：　聯絡電話：　備註：
+# 招收與否　年級限制：　成績要求：　繳交資料：　先修課程：　錄取名額：　測驗：　備註：
+```
+
+# 雙主修
+```{r double sort}
+# 資料分類
+college <- str_extract(double[[1]],".+學院")               # 學院only
+department <- gsub(".+學院","",double[[1]])                # 科系only
+
+variable <- c("招收","年級限制","成績要求","繳交資料","先修課程","測驗","備註","聯絡電話")
+table <- list()
+for(i in 1:length(variable)){
+  table[[i]] <- gsub(paste0(variable[i],"："),"",str_extract(double[[3]],paste0(variable[i],"：.+")))
+}
+
+double_sorted <- cbind(college,department,table[[1]])
+
+# 轉成dataframe
+double_sorted <- data.frame(double_sorted)
+
+for(i in 2:length(variable)){
+  double_sorted <- cbind(double_sorted,table[[i]])
+}
+colnames(double_sorted) <- c("學院","科系",variable)
+#View(double_sorted)
+
+```
+
+```{r double sort 2 微小更動,可怖執行}
+#for(i in 1:nrow(double_sort)){
+#  double_sort[i,5] <- as.character(strsplit(double_sort[i,5],"。")) 
+#}
+#View(double_sort)
+
+#double_sortd[43,5] <- as.character(strsplit(double_sorted[43,5],"。"))
+```
+
+```{r read double course}
+# 讀取每個科系的雙主修課程(彙整在一個excel檔)
+double_course <- list()
+for(i in 1:30){
+  double_course[[i]] <- import("雙主修課程.xlsx", which=i) 
+}
+names(double_course) <-  c("電機","心理","資訊工程","外國語文學","歷史","台灣","數學","物理學","光電","機械","地球","材料","都巿","土木","系統","工程科學","資訊管理","交通","中國","化學工程","生命","化學系","統計","經濟","航空","能源","測量","環境","醫學工程","生物科技")     
+#View(double_course)
+```
+
+```{r}
+# 把科系的欄位找出來 (若課程排列是照雙主修科系排列的順序,那此步驟可以直接更改為從1開始到45)
+# grep找位置用
+department <-names(double_course)
+b <- data.frame("科目名稱位置"=rep(NA,length(department)),"科系所在位置"=rep(NA,length(department)))
+for(i in 1:length(department)){
+  b[i,1] <- grep("科目名稱",double_course[[i]][,1]) 
+  b[i,2] <- grep(department[i],double_sorted[,2])  
+}
+```
+
+```{r}
+# 把雙主修課程備註 和 雙主修課程 以 vector 的型式(應該) 存在一個 data.frame 中
+# 之後若要把一個個課程拿出來去查課程資訊的話(像是去查上課地點,時間等),可能要先變成list再去找應該會比較方便 
+e <- data.frame("課程備註"=rep(NA,length(department)),"課程名稱"=rep(NA,length(department)))
+for(i in 1:length(department)){
+  a <- c()
+  c <- c()
+  
+  for(j in 1:(b[i,1]-1)){
+    a <- c(a,double_course[[i]][j,])
+  }
+  
+  if(b[i,1]+1 <= length(double_course[[i]][,1])){
+    for(j in (b[i,1]+1):(length(double_course[[i]][,1]))){
+      c <- c(c,double_course[[i]][j,])
+    }
+  }
+  
+  e[i,1] <- as.character(as.data.frame(as.character(a)))
+  e[i,2] <- as.character(as.data.frame(as.character(c)))
+}
+```
+
+```{r merge two dataframe}
+# 把上面兩個 dataframe 結合在一起 
+# 其實可以省略這個步驟，或是一開始把 b 和 e 寫在同一個 dataframe 中就好了:D
+double_course_sorted <- cbind(b,e)
+#View(double_course_sorted)
+```
+
+```{r}
+for(i in 1:length(department)){
+  double_sorted[double_course_sorted[i,2],11] <- double_course_sorted[i,3]
+  double_sorted[double_course_sorted[i,2],12] <- double_course_sorted[i,4]
+}
+colnames(double_sorted) <- c("學院","科系",variable,"課程備註","課程名稱")
+```
+
+
+```{r export}
+export(double_sorted, "雙主.xlsx") 
+```
+
+
+# 輔系
+```{r double sort}
+# 資料分類
+college <- str_extract(minor[[1]],".+學院")               # 學院only
+department <- gsub(".+學院","",minor[[1]])                # 科系only
+
+variable <- c("招收","年級限制","成績要求","繳交資料","先修課程","測驗","備註","聯絡電話")
+table <- list()
+for(i in 1:length(variable)){
+  table[[i]] <- gsub(paste0(variable[i],"："),"",str_extract(minor[[3]],paste0(variable[i],"：.+")))
+}
+
+minor_sorted <- cbind(college,department,table[[1]])
+
+# 轉成dataframe
+minor_sorted <- data.frame(minor_sorted)
+
+for(i in 2:length(variable)){
+  minor_sorted <- cbind(minor_sorted,table[[i]])
+}
+colnames(minor_sorted) <- c("學院","科系",variable)
+#View(double_sorted)
+
+```
+
+
+```{r read double course}
+# 讀取每個科系的雙主修課程(彙整在一個excel檔)
+minor_course <- list()
+for(i in 1:31){
+  minor_course[[i]] <- import("輔系課程.xlsx", which=i) 
+}
+names(minor_course) <-  c("都巿","統計","經濟","地球","電機","外國","土木","工程科學","資訊管理","機械","光電","中國","化學工程","系統","航空","心理","能源","台灣","資訊工程","物理學","化學系","數學","歷史","生命科學","材料","測量","環境","醫學工程","企業","交通","生物技術")     
+#View(minor_course)
+```
+
+```{r}
+# 把科系的欄位找出來 (若課程排列是照雙主修科系排列的順序,那此步驟可以直接更改為從1開始到45)
+# grep找位置用
+department <-names(minor_course)
+b <- data.frame("科目名稱位置"=rep(NA,length(department)),"科系所在位置"=rep(NA,length(department)))
+for(i in 1:length(department)){
+  b[i,1] <- grep("科目名稱",minor_course[[i]][,1]) 
+  b[i,2] <- grep(department[i],minor_sorted[,2])  
+}
+```
+
+```{r}
+# 把雙主修課程備註 和 雙主修課程 以 vector 的型式(應該) 存在一個 data.frame 中
+# 之後若要把一個個課程拿出來去查課程資訊的話(像是去查上課地點,時間等),可能要先變成list再去找應該會比較方便 
+e <- data.frame("課程備註"=rep(NA,length(department)),"課程名稱"=rep(NA,length(department)))
+for(i in 1:length(department)){
+  a <- c()
+  c <- c()
+  
+  for(j in 1:(b[i,1]-1)){
+    a <- c(a,minor_course[[i]][j,])
+  }
+  
+  if(b[i,1]+1 <= length(minor_course[[i]][,1])){
+    for(j in (b[i,1]+1):(length(minor_course[[i]][,1]))){
+      c <- c(c,minor_course[[i]][j,])
+    }
+  }
+  
+  e[i,1] <- as.character(as.data.frame(as.character(a)))
+  e[i,2] <- as.character(as.data.frame(as.character(c)))
+}
+```
+
+```{r merge two dataframe}
+# 把上面兩個 dataframe 結合在一起 
+# 其實可以省略這個步驟，或是一開始把 b 和 e 寫在同一個 dataframe 中就好了:D
+minor_course_sorted <- cbind(b,e)
+#View(minor_course_sorted)
+```
+
+```{r}
+for(i in 1:length(department)){
+  minor_sorted[minor_course_sorted[i,2],11] <- minor_course_sorted[i,3]
+  minor_sorted[minor_course_sorted[i,2],12] <- minor_course_sorted[i,4]
+}
+colnames(minor_sorted) <- c("學院","科系",variable,"課程備註","課程名稱")
+```
+
+```{r export}
+export(minor_sorted, "輔系.xlsx") 
+```
+# 轉系
+```{r double sort}
+# 資料分類
+college <- str_extract(transfer[[1]],".+學院")               # 學院only
+department <- gsub(".+學院","",transfer[[1]])                # 科系only
+
+variable <- c("招收","年級限制","成績要求","繳交資料","先修課程","測驗","面試","備註")
+table <- list()
+for(i in 1:length(variable)){
+  table[[i]] <- gsub(paste0(variable[i],"："),"",str_extract(transfer[[3]],paste0(variable[i],"：.+")))
+}
+
+transfer_sorted <- cbind(college,department,table[[1]])
+
+# 轉成dataframe
+transfer_sorted <- data.frame(transfer_sorted)
+
+for(i in 2:length(variable)){
+  transfer_sorted <- cbind(transfer_sorted,table[[i]])
+}
+
+transfer_sorted <- cbind(transfer_sorted,transfer[,4],transfer[,5])
+colnames(transfer_sorted) <- c("學院","科系",variable,"一般生可轉入名額","橋生可轉入名額")
+#View(transfer_sorted)
+
+```
+
+```{r export}
+export(transfer_sorted, "轉系.xlsx") 
+```
+
+
