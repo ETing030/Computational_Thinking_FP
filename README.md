@@ -56,9 +56,9 @@
 
 ---
 預計 4/19 午夜 或 4/20 開工 :)  
-5. `project.py`
-6. `projectuitry.py`、`projectuitry.ui`
-7. `projectpyqt.py`
+5. `project.py`  
+6. `projectuitry.py`、`projectuitry.ui`  
+7. `projectpyqt.py`  
 
 
 
