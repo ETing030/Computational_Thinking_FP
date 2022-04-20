@@ -11,7 +11,7 @@
 
 ![image](https://user-images.githubusercontent.com/39528069/162632428-0a12c84e-4d67-491d-9a8d-a4fae7d8f731.png)
 
-![image](https://user-images.githubusercontent.com/39528069/162632553-344520bf-bf9a-4cb3-9391-fbc620fd4a51.png)
+![image](https://user-images.githubusercontent.com/39528069/164186875-08993e65-8897-46b1-9c34-ebde098aa892.png)
 
 整體來說，這次的成果並非有效地解決我們所提出的問題，算得上是一次失敗的經驗，但有磨練到程式能力 :)
 
@@ -23,7 +23,7 @@
 ## 流程
 1.~ 4. 為相關資料的收集與整理  
 5. 為主要程式，說明針對這次報告題目，我們所採取的方式  
-6.~ 7. 為以 5. 形式為基礎所建立之使用者介面   
+6. 為以 5. 形式為基礎所建立之使用者介面   
 
 1. 以人工的方式（複製和打字），搜集申請條件，包含以下項目。除了最後一項，其餘皆先由 Google sheet 存取，再下載至電腦中
    - 109 學年輔系條件、109 學年雙主條件、 110 學年轉系條件
@@ -69,13 +69,11 @@
 ▲ 以雙主修數學系為例
 
 
-6. 設計 GUI 版面，`projectuitry.ui`、`projectuitry.py` 分別為 PyQt5 的 GUI 版面設計與該版面對應之 py 檔
-
-7. 以 `project.py` 為參考，製作具有該程式中所提及之功能，即 `projectpyqt.py`
+6. 設計 GUI 版面，`projectuitry.ui`、`projectuitry.py` 分別為 PyQt5 的 GUI 版面設計與該版面對應之 py 檔，並以 `project.py` 為參考，製作具有該程式中所提及之功能，即 `projectpyqt.py`
 ![image](https://user-images.githubusercontent.com/39528069/162632428-0a12c84e-4d67-491d-9a8d-a4fae7d8f731.png)
-
-![image](https://user-images.githubusercontent.com/39528069/162632553-344520bf-bf9a-4cb3-9391-fbc620fd4a51.png)
-
+▲ 以材料系轉系為例
+![image](https://user-images.githubusercontent.com/39528069/164186890-abcfe40c-aaf9-455d-ac7f-42b9acfd65c9.png)
+▲ 以雙主修資工系為例
 
 
 
