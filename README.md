@@ -62,13 +62,19 @@
    - 確認學生想去之科系和辦法（雙主修／輔系／轉系／自由選修）
    - 顯示對應該科系該辦法之原始資料（資料為 `條件一覽 - 109學年輔系條件.csv`、`條件一覽 - 109學年雙主條件.csv`、`條件一覽 - 110學年轉系條件.csv` 中之內容）
    - 顯示對應該科系該辦法之分類後的條件（資料為 `條件一覽 - 輔系統整.csv`、`條件一覽 - 雙主統整.csv`、`條件一覽 - 轉系統整.csv` 中之內容）
+   - 若為雙主修／輔系，則會顯示課程名稱和備註（資料為 `條件一覽 - 輔系統整.csv`、`條件一覽 - 雙主統整.csv` 中之內容）
 ![image](https://user-images.githubusercontent.com/39528069/164173761-9f200d78-29c0-4a99-b8a7-09fd6d48abf7.png)
 ▲ 以建築系轉系為例
+![image](https://user-images.githubusercontent.com/39528069/164184891-b666b292-1960-45d5-9e06-22f096d86c2e.png)
+▲ 以雙主修數學系為例
 
-7. `projectuitry.py`、`projectuitry.ui`  
 
-9. `projectpyqt.py`  
+6. 設計 GUI 版面，`projectuitry.ui`、`projectuitry.py` 分別為 PyQt5 的 GUI 版面設計與該版面對應之 py 檔
 
+7. 以 `project.py` 為參考，製作具有該程式中所提及之功能，即 `projectpyqt.py`
+![image](https://user-images.githubusercontent.com/39528069/162632428-0a12c84e-4d67-491d-9a8d-a4fae7d8f731.png)
+
+![image](https://user-images.githubusercontent.com/39528069/162632553-344520bf-bf9a-4cb3-9391-fbc620fd4a51.png)
 
 
 
