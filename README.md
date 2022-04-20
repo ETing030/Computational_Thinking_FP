@@ -54,11 +54,12 @@
 ![image](https://user-images.githubusercontent.com/39528069/163963207-5205c7eb-668d-48b1-9f7f-235e34ae69fe.png)  
 ▲ `雙主修課程.xlsx` 之課程名稱與備註 
 
----
-預計 4/20 開工 :)  
-5. `project.py`  
-6. `projectuitry.py`、`projectuitry.ui`  
-7. `projectpyqt.py`  
+
+5. `project.py` ，
+![image](https://user-images.githubusercontent.com/39528069/164173516-aaa2082b-7229-4ba4-8d10-3e643c7c2d88.png)
+
+7. `projectuitry.py`、`projectuitry.ui`  
+8. `projectpyqt.py`  
 
 
 
