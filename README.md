@@ -75,7 +75,12 @@
 ![image](https://user-images.githubusercontent.com/39528069/164186890-abcfe40c-aaf9-455d-ac7f-42b9acfd65c9.png)
 ▲ 以雙主修資工系為例
 
-
+---
+4/20 晚上 或　4/21 補足
+- GUI排版, 功能說明(不確定必要與否)
+- 可改善點, 應補足地方
+- 心得
+- :)
 
 
 
