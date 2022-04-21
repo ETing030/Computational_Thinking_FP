@@ -101,7 +101,7 @@
 </p>
 
 
-6. 設計 GUI 版面，`projectuitry.ui`、`projectuitry.py` 分別為 PyQt5 的 GUI 版面設計與該版面對應之 py 檔，並以 `project.py` 為參考，製作具有該程式中所提及之功能，即 `projectpyqt.py`
+6. 設計 GUI 版面，`projectuitry.ui`、`projectuitry.py` 分別為 PyQt5 的 GUI 版面設計與該版面對應之 py 檔，並以 `project.py` 為參考，製作具有該程式中所提及之功能，即 `projectpyqt.py`，功能與圖例如下
    - 將原本需要手動輸入的內容（如系所），以下拉式選單代替
    - 較原始資料可依需求選擇顯示與否
    - 針對雙主修／輔系，將課程名稱與備註分別為不同欄位，以方便閱讀，並整理課程相關資訊，如學分、上課時間等
